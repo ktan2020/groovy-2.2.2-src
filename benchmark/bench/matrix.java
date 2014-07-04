@@ -8,11 +8,11 @@ import java.util.*;
 public class matrix {
     static int SIZE = 30;
 
-    public static void main(String[] args) {
+    public static void main(String args[]) {
         int n = Integer.parseInt(args[0]);
-        int[][] m1 = mkmatrix(SIZE, SIZE);
-        int[][] m2 = mkmatrix(SIZE, SIZE);
-        int[][] mm = new int[SIZE][SIZE];
+        int m1[][] = mkmatrix(SIZE, SIZE);
+        int m2[][] = mkmatrix(SIZE, SIZE);
+        int mm[][] = new int[SIZE][SIZE];
         for (int i=0; i<n; i++) {
             mmult(SIZE, SIZE, m1, m2, mm);
         }
@@ -27,7 +27,7 @@ public class matrix {
 
     public static int[][] mkmatrix (int rows, int cols) {
         int count = 1;
-        int[][] m = new int[rows][cols];
+        int m[][] = new int[rows][cols];
         for (int i=0; i<rows; i++) {
             for (int j=0; j<cols; j++) {
                 m[i][j] = count++;

@@ -51,12 +51,12 @@ def benchData = [
     wordfreq        :   [1],*/
 ]
 
-//setGroovyLib()
+setGroovyLib()
 
 horizontalBreak()
 println "Groovy benchmarking test"
 showJavaVersion()
-//println "Groovy lib: $GROOVY_LIB"
+println "Groovy lib: $GROOVY_LIB"
 horizontalBreak()
 def executeBench= { bench, input ->
     println "Benchmark $bench"
@@ -91,7 +91,7 @@ boolean prepare(bench, ending) {
 
     // compile file using groovy compiler
     // in = orig, out = exec
-    //Compiler.main("-j","-d", "exec", orig.absolutePath)
+    Compiler.main("-j","-d", "exec", orig.absolutePath)
     true
 }
 
@@ -120,7 +120,7 @@ void showJavaVersion() {
 void execBenchmark(bench, input) {
     input.each { param -> 
         def cp = "./exec/" + File.pathSeparatorChar
-        //cp += GROOVY_LIB + File.pathSeparatorChar
+        cp += GROOVY_LIB + File.pathSeparatorChar
         cp += "../target/lib/runtime/*"
 
         def time1 = System.nanoTime()

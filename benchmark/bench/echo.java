@@ -34,7 +34,7 @@ class EchoClient extends Thread {
         Socket socketFromServer = null;
         try {
             socketFromServer = new Socket(inetaServer, iPort);
-            BufferedReader input = new BufferedReader(new InputStreamReader(socketFromServer.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(socketFromServer.getInputStream()));
             OutputStream out = socketFromServer.getOutputStream();
 
             byte[] bytesOut = GREETING.getBytes();
@@ -42,7 +42,7 @@ class EchoClient extends Thread {
             for(int i = 0; i < iIterations; ++i) {
             out.write(bytesOut);
             out.flush();
-            String strRead = input.readLine();
+            String strRead = in.readLine();
             if(!strRead.equals(strIn))
                 throw new RuntimeException("client: \"" + strIn + "\" ne \"" + strRead + "\"");
             }
@@ -72,13 +72,13 @@ class EchoServer extends Thread {
     }
 
     public void run() {
-        byte[] bytesIn = new byte[BUFFER_SIZE];
+        byte bytesIn[] = new byte[BUFFER_SIZE];
         try {
             Socket socketClient = ssAccepting.accept();
-            InputStream input = socketClient.getInputStream();
+            InputStream in = socketClient.getInputStream();
             OutputStream out = socketClient.getOutputStream();
             int iLength, iCount = 0;
-            while ((iLength = input.read(bytesIn)) != -1) {
+            while ((iLength = in.read(bytesIn)) != -1) {
                 out.write(bytesIn, 0, iLength);
                 out.flush();
                 iCount += iLength;

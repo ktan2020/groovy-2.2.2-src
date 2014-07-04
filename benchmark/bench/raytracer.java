@@ -72,7 +72,7 @@ public final class raytracer {
         Vec o = add(ray.orig, add(scale(i.lambda, ray.dir),
                       scale(delta, i.normal)));
         double g = dot(i.normal, light);
-        if (g >= 0) return 0.0f;
+        if (g >= 0) return 0.;
         Ray sray = new Ray(o, scale(-1, light));
         Hit si = scene.intersect(new Hit(infinity, new Vec(0, 0, 0)), sray);
         return (si.lambda == infinity ? -g : 0);
@@ -98,12 +98,12 @@ public final class raytracer {
             double g=0;
             for (int dx=0; dx<ss; ++dx)
                 for (int dy=0; dy<ss; ++dy) {
-                    Vec d = new Vec(x+dx*1.0f/ss-n/2.0f, y+dy*1.0f/ss-n/2.0f, n);
+                    Vec d = new Vec(x+dx*1./ss-n/2., y+dy*1./ss-n/2., n);
                     Ray ray = new Ray(new Vec(0, 0, -4), unitise(d));
                     g += ray_trace(unitise(new Vec(-1, -3, 2)),
                                ray, scene);
                 }
-                System.out.print((char)(0.5f+255*g/(ss*ss)));
+                System.out.print((char)(.5+255*g/(ss*ss)));
             }
     }
     public static void main(String[] args) {

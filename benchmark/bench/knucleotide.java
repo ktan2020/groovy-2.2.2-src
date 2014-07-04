@@ -39,9 +39,9 @@ public class knucleotide {
             String temp = sequence.substring(index, index + fragmentLength);
             knucleotide fragment = (knucleotide)map.get(temp);
             if (fragment != null)
-				fragment.count++;
+            fragment.count++;
             else
-				map.put(temp, new knucleotide(temp));
+            map.put(temp, new knucleotide(temp));
         }
 
         return map;
@@ -52,9 +52,9 @@ public class knucleotide {
         for (Map.Entry<String, knucleotide> entry : map2.entrySet()) {
             knucleotide sum = (knucleotide)map1.get(entry.getKey());
             if (sum != null)
-				sum.count += entry.getValue().count;
+            sum.count += entry.getValue().count;
             else
-				map1.put(entry.getKey(), entry.getValue());
+            map1.put(entry.getKey(), entry.getValue());
         }
         return map1;
     }
@@ -62,7 +62,7 @@ public class knucleotide {
     static String writeFrequencies(Map<String, knucleotide> frequencies) {
         ArrayList<knucleotide> list = new ArrayList<knucleotide>(frequencies.size());
         int sum = 0;
-        for (fragment in frequencies.values()) {
+        for (knucleotide fragment : frequencies.values()) {
             list.add(fragment);
             sum += fragment.count;
         }
@@ -78,7 +78,7 @@ public class knucleotide {
         });
 
         StringBuilder sb = new StringBuilder();
-        for (k in list)
+        for (knucleotide k : list)
             sb.append(String.format("%s %.3f\n", k.sequence.toUpperCase(), (float)(k.count) * 100.0f / (double)sum));
 
         return sb.toString();
@@ -87,7 +87,7 @@ public class knucleotide {
     static String writeCount(List<Future<Map<String, knucleotide>>> futures, String nucleotideFragment) throws Exception {
         int count = 0;
         for (Future<Map<String, knucleotide>> future : futures) {
-            temp = future.get().get(nucleotideFragment);
+            knucleotide temp = future.get().get(nucleotideFragment);
             if (temp != null) count += temp.count;
         }
 
@@ -96,18 +96,18 @@ public class knucleotide {
 
     public static void main (String[] args) throws Exception {
         String line;
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        while ((line = input.readLine()) != null) {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        while ((line = in.readLine()) != null) {
             if (line.startsWith(">THREE")) break;
         }
 
         StringBuilder sbuilder = new StringBuilder();
-        while ((line = input.readLine()) != null) {
+        while ((line = in.readLine()) != null) {
             sbuilder.append(line);
         }
 
         ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        int[] fragmentLengths = [ 1, 2, 3, 4, 6, 12, 18 ];
+        int[] fragmentLengths = { 1, 2, 3, 4, 6, 12, 18 };
         List<Future<Map<String, knucleotide>>> futures = pool.invokeAll(createFragmentTasks(sbuilder.toString(), fragmentLengths));
         pool.shutdown();
 
